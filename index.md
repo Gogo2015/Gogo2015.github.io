@@ -2,26 +2,7 @@
 
   <!-- Main Content (left side) -->
   <div style="flex-grow: 1;">
-    # Gaurav Mitra  
-    MSCS @ Georgia Tech
-
-    Machine Learning • Computer Vision • Motion Forecasting
-
-    Currently working on:
-    - Waymo Open Motion Dataset trajectory prediction
-
-    Previously:
-    - Video compression autoencoders (variable-rate)
-    - Software engineering + cloud systems (ARL internship)
-
-    ## Projects
-    [Waymo Forecasting](projects/waymo.md)  
-    [Autoencoder](projects/autoencoder.md)
-
-    ## Resume
-    [Download Resume](resume.pdf)
-
-  </div>
+</div>
 
   <!-- Sidebar (right side) -->
   <div style="
@@ -52,4 +33,21 @@
 
 </div>
 
+# Gaurav Mitra  
+MSCS @ Georgia Tech
 
+Machine Learning • Computer Vision • Motion Forecasting
+
+Currently working on:
+- Waymo Open Motion Dataset trajectory prediction
+
+Previously:
+- Video compression autoencoders (variable-rate)
+- Software engineering + cloud systems (ARL internship)
+
+## Projects
+[Waymo Forecasting](projects/waymo.md)  
+[Autoencoder](projects/autoencoder.md)
+
+## Resume
+[Download Resume](resume.pdf)

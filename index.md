@@ -19,5 +19,5 @@ Previously:
 
 ## Contact
 Email: mitragaurav10@gmail.com  
-GitHub: https://github.com/Gogo2015
+GitHub: https://github.com/Gogo2015  
 LinkedIn: https://linkedin.com/in/mitragaurav

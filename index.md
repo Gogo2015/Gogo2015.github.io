@@ -21,8 +21,8 @@
 
     <h2>Projects</h2>
     <ul>
-      <li><a href="projects/waymo.md">Waymo Forecasting</a></li>
-      <li><a href="projects/autoencoder.md">Autoencoder</a></li>
+      <li><a href="projects/waymo">Waymo Forecasting</a></li>
+      <li><a href="projects/autoencoder">Autoencoder</a></li>
     </ul>
 
     <h2>Resume</h2>

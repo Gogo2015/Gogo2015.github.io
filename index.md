@@ -1,6 +1,11 @@
 # Gaurav Mitra  
 MSCS @ Georgia Tech
 
+## Contact
+Email: mitragaurav10@gmail.com  
+GitHub: [https://github.com/Gogo2015](https://github.com/Gogo2015)  
+LinkedIn: [https://linkedin.com/in/mitragaurav](https://linkedin.com/in/mitragaurav)
+
 Machine Learning • Computer Vision • Motion Forecasting
 
 Currently working on:
@@ -16,8 +21,3 @@ Previously:
 
 ## Resume
 [Download Resume](resume.pdf)
-
-## Contact
-Email: mitragaurav10@gmail.com  
-GitHub: https://github.com/Gogo2015  
-LinkedIn: https://linkedin.com/in/mitragaurav

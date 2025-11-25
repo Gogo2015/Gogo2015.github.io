@@ -1,10 +1,36 @@
 <div style="display: flex; gap: 24px; align-items: flex-start;">
 
-  <!-- Main Content (left side) -->
+  <!-- Main Content (left panel) -->
   <div style="flex-grow: 1;">
-</div>
 
-  <!-- Sidebar (right side) -->
+    <h1 style="margin-top: 0;">Gaurav Mitra</h1>
+    <p><strong>MSCS @ Georgia Tech</strong></p>
+
+    <p>Machine Learning • Computer Vision • Motion Forecasting</p>
+
+    <h2>Currently working on</h2>
+    <ul>
+      <li>Waymo Open Motion Dataset trajectory prediction</li>
+    </ul>
+
+    <h2>Previously</h2>
+    <ul>
+      <li>Video compression autoencoders (variable-rate)</li>
+      <li>Software engineering + cloud systems (ARL internship)</li>
+    </ul>
+
+    <h2>Projects</h2>
+    <ul>
+      <li><a href="projects/waymo.md">Waymo Forecasting</a></li>
+      <li><a href="projects/autoencoder.md">Autoencoder</a></li>
+    </ul>
+
+    <h2>Resume</h2>
+    <p><a href="resume.pdf">Download Resume</a></p>
+
+  </div>
+
+  <!-- Sidebar (right panel) -->
   <div style="
       background: #f4f4f4;
       padding: 16px;
@@ -32,22 +58,3 @@
   </div>
 
 </div>
-
-# Gaurav Mitra  
-MSCS @ Georgia Tech
-
-Machine Learning • Computer Vision • Motion Forecasting
-
-Currently working on:
-- Waymo Open Motion Dataset trajectory prediction
-
-Previously:
-- Video compression autoencoders (variable-rate)
-- Software engineering + cloud systems (ARL internship)
-
-## Projects
-[Waymo Forecasting](projects/waymo.md)  
-[Autoencoder](projects/autoencoder.md)
-
-## Resume
-[Download Resume](resume.pdf)

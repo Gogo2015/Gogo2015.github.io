@@ -1,10 +1,31 @@
+<div style="
+    background: #f4f4f4;
+    padding: 16px;
+    width: 240px;
+    border-radius: 6px;
+    box-shadow: 0 0 4px rgba(0,0,0,0.1);
+    font-size: 15px;
+">
+  <h2 style="margin-top: 0;">Contact</h2>
+  
+  <p style="margin: 6px 0;">
+    <strong>Email:</strong><br>
+    <a href="mailto:mitragaurav10@gmail.com">mitragaurav10@gmail.com</a>
+  </p>
+
+  <p style="margin: 6px 0;">
+    <strong>GitHub:</strong><br>
+    <a href="https://github.com/Gogo2015">github.com/Gogo2015</a>
+  </p>
+
+  <p style="margin: 6px 0;">
+    <strong>LinkedIn:</strong><br>
+    <a href="https://linkedin.com/in/mitragaurav">linkedin.com/in/mitragaurav</a>
+  </p>
+</div>
+
 # Gaurav Mitra  
 MSCS @ Georgia Tech
-
-## Contact
-Email: mitragaurav10@gmail.com  
-GitHub: [https://github.com/Gogo2015](https://github.com/Gogo2015)  
-LinkedIn: [https://linkedin.com/in/mitragaurav](https://linkedin.com/in/mitragaurav)
 
 Machine Learning • Computer Vision • Motion Forecasting
 

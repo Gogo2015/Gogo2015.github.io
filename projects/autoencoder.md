@@ -1,3 +1,8 @@
+---
+layout: default
+title: Video Compression Autoencoder
+---
+
 # Quantized Video Compression Autoencoder  
 **Repository:** [ae_compressed_vision](https://github.com/Gogo2015/ae_compressed_vision)  
 **Technical Report:** [AutoencoderPaper.pdf](https://github.com/Gogo2015/ae_compressed_vision/blob/main/AutoencoderPaper.pdf)

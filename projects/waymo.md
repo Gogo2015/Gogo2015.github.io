@@ -1,3 +1,8 @@
+---
+layout: default
+title: Waymo Motion Forecasting
+---
+
 # Waymo Motion Forecasting Baseline  
 **Repository:** [WaymoMotionEstimator](https://github.com/Gogo2015/WaymoMotionEstimator)  
 **Technical Report:** [Conv MLP Paper](https://github.com/Gogo2015/WaymoMotionEstimator/blob/main/ConvMLPPaper.pdf)

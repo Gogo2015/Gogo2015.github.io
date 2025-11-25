@@ -53,7 +53,7 @@
 
     <p style="margin: 6px 0;">
       <strong>LinkedIn:</strong><br>
-      <a href="https://linkedin.com/in/mitragaurav">linkedin.com/in/mitragaurav</a>
+      <a href="https://linkedin.com/in/mitragaurav">linkedin.com/in/mitragaurav/</a>
     </p>
   </div>
 

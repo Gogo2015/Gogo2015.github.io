@@ -50,9 +50,9 @@ This project implements a trajectory‐prediction model on the Waymo Open Motion
 - Docker + reproducible environment
 
 ## Recent Improvements
-✅ **Multi-modal predictions** - Implemented 6-mode trajectory prediction with confidence scoring
-✅ **Config-based experiment management** - YAML configuration system for reproducible research
-✅ **Winner-takes-all loss** - Combined control and intent objectives for better multi-modal training
+**Multi-modal predictions** - Implemented 6-mode trajectory prediction with confidence scoring
+**Config-based experiment management** - YAML configuration system for reproducible research
+**Winner-takes-all loss** - Combined control and intent objectives for better multi-modal training
 
 ## Future Work
 - Integrate map / road-graph context and neighboring agents for scene-aware predictions.

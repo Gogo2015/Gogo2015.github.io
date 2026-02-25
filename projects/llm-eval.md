@@ -5,14 +5,13 @@ title: LLM Semantic Syntax Evaluation
 
 # LLM Semantic Syntax Evaluation
 **Repository:** [llm-semantic-syntax](https://github.com/Gogo2015/llm-semantic-syntax)
-**Course:** CS 4392 — Programming Languages (Final Project)
+**Course:** CS 6390 — Programming Languages (Final Project)
 
 ## Project Overview
 This project evaluates how well large language models can generate semantically correct programs that combine arithmetic logic with graphical rendering. We prompt three LLMs to reconstruct five classic board games in Python using pygame, then automatically test the generated code across three error categories: syntax errors (detected at parse time), semantic errors (missing or incorrect game components), and game logic errors (incorrect win detection, collision handling, or state management).
 
 ## My Contributions
 - Designed and built the **full automated evaluation pipeline**: syntax validation via `ast.parse` and `py_compile`, semantic checking through dynamic module loading and function signature verification, and game logic testing using headless pygame execution with mock rendering.
-- Engineered **headless game logic testing** using AST transformations to strip blocking main loops, mock pygame surfaces, and threaded execution with timeouts — enabling automated testing of interactive graphical programs.
 - Wrote **prompt templates** for each game specifying rules, requirements, and expected function interfaces.
 - Ran experiments across three models (GPT-4o-mini, Claude 3 Sonnet, Gemini 2.0 Flash) with 20–100 repetitions per game per model at temperature 0.75.
 - Analyzed results and identified significant performance gaps between models.

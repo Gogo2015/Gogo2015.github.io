@@ -24,6 +24,7 @@
       <li><a href="projects/waymo">Waymo Forecasting</a></li>
       <li><a href="projects/autoencoder">Autoencoder</a></li>
       <li><a href="projects/llm-eval">LLM Semantic Syntax Evaluation</a></li>
+      <li><a href="projects/earthquake">Earthquake Analysis Web App</a></li>
     </ul>
 
     <h2>Resume</h2>

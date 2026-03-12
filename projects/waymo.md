@@ -3,64 +3,69 @@ layout: default
 title: Waymo Motion Forecasting
 ---
 
-# Waymo Motion Forecasting Baseline  
+# Waymo Motion Forecasting  
 **Repository:** [WaymoMotionEstimator](https://github.com/Gogo2015/WaymoMotionEstimator)  
-**Technical Report:** [Conv MLP Paper](https://github.com/Gogo2015/WaymoMotionEstimator/blob/main/ConvMLPPaper.pdf)
+**Technical Report:** [ConvMLP Paper](https://github.com/Gogo2015/WaymoMotionEstimator/blob/main/ConvMLPPaper.pdf)
 
 ## Project Overview  
-This project implements a trajectory‐prediction model on the Waymo Open Motion Dataset. The model uses past agent motion (e.g., 10­step history) to forecast future positions (~80 steps ahead), helping autonomous agents anticipate motion for planning and safety.
+This project implements trajectory prediction models on the Waymo Open Motion Dataset (WOMD). Given 1 second of past agent motion (10 timesteps at 10 Hz), the models forecast 8 seconds of future positions (80 timesteps). Both models were trained on the full WOMD training partition (250 TFRecord files) using a GPU-accelerated Google Compute Engine VM, streaming data directly from Google Cloud Storage.
 
-## My Contributions
-- Designed and implemented a **Conv-MLP baseline architecture**:
-  - Convolutional encoder extracts temporal motion features from past trajectory sequences.
-  - MLP decoder outputs the future trajectory coordinates.
-- Extended to **Multi-Modal prediction system**:
-  - Implemented MultiModalConvMLP predicting 6 possible future trajectories with confidence scores.
-  - Developed winner-takes-all loss combining regression (control) and classification (intent) objectives.
-  - Addressed inherent uncertainty in motion prediction by modeling multiple plausible futures.
-- Built the data pipeline:
-  - Reading Waymo TFRecords, transforming coordinate frame so last heading aligns with +x axis.
-  - Creating training/validation splits.
-- Established config-based experiment management system with YAML configuration files for reproducible research.
-- Training & evaluation:
-  - Employed metrics such as Average Displacement Error (ADE) and Final Displacement Error (FDE).
-  - Incorporated predictive visualization comparing actual vs predicted trajectories.
+Two architectures are implemented: a single-mode baseline (ConvMLP) and a multi-modal extension (MultiModalConvMLP) that predicts 6 possible future trajectories with confidence scores. Both operate on individual agent tracks without map or scene context.
 
-## Insights & Visualization
-- Key insight: Without map or social context, models tend to default to simple continuation of past motion, limiting performance in curve/branching scenarios.
-- Multi-modal prediction captures uncertainty better: predicting multiple plausible trajectories with confidence scores proves more robust than single-trajectory forecasting.
-- Reflection: Gained stronger understanding of deep learning pipeline for motion forecasting and WOMD data. Learned how simplifying assumptions (no map context) affect real-world viability, and how modeling uncertainty through multi-modal outputs improves prediction reliability.
+## Results
+
+| Model | Avg Loss | Avg ADE (m) | Avg FDE (m) |
+|---|---|---|---|
+| ConvMLP | 434.36 | 14.25 | 31.83 |
+| MultiModalConvMLP (best-of-6) | 87.35 | 3.85 | 10.32 |
+
+The multi-modal model achieves a **73% reduction in ADE** and **68% reduction in FDE** compared to the baseline, demonstrating that real-world motion is inherently multi-modal — a single predicted trajectory cannot capture the range of plausible futures (turning, lane changing, stopping), while offering six modes and selecting the best one dramatically improves accuracy.
 
 **Single-Mode Baseline:**
+
 ![Trajectory comparison](https://raw.githubusercontent.com/Gogo2015/WaymoMotionEstimator/main/gifs/ConvMLP/test_agent_4.gif)
-*Single trajectory prediction vs ground truth*
+
+*The baseline produces straight-line extrapolations that diverge when the agent turns or brakes.*
 
 **Multi-Modal Predictions:**
+
 ![Multimodal Predictions](https://raw.githubusercontent.com/Gogo2015/WaymoMotionEstimator/main/gifs/MultiModalConvMLP/test_agent_0.gif)
 ![Multimodal Predictions](https://raw.githubusercontent.com/Gogo2015/WaymoMotionEstimator/main/gifs/MultiModalConvMLP/test_agent_2.gif)
-*Multiple trajectory modes with confidence scores for better uncertainty modeling*
+
+*Six trajectory modes spread to cover distinct plausible futures, with the confidence head distributing probability across relevant modes.*
+
+## My Contributions
+
+- **Designed and implemented both model architectures** — a Conv1D + MLP baseline and a multi-modal extension with K=6 trajectory heads and a softmax confidence head.
+- **Built the full training infrastructure on GCP** — provisioned a GPU VM, configured streaming data ingestion from Waymo's public GCS bucket, and managed training runs via screen sessions with checkpoint management.
+- **Developed the winner-takes-all loss** — combines a control loss (regression on the best-matching trajectory mode) with an intent loss (cross-entropy encouraging the confidence head to identify the correct mode).
+- **Identified and fixed a critical data preprocessing bug** — the past validity mask was parsed but never applied, allowing agents with invalid past timesteps into training. This corrupted the coordinate normalization (which computes translation and rotation from the last observed positions), causing exploding predictions. The fix filters to agents with all past timesteps valid, which was essential for stable training. (See technical report for details.)
+- **Built the data pipeline** — TFRecord parsing, coordinate normalization (translate to origin, rotate to align heading with +x axis), validity mask handling, and train/val splitting.
+- **Established config-based experiment management** — YAML configuration files for reproducible experiments with automatic timestamped logging and checkpoint saving.
+- **Evaluation and visualization** — ADE/FDE metrics with validity-aware computation, animated GIF generation comparing predicted vs. ground truth trajectories, and dynamic checkpoint resolution for evaluation.
+
+## Architecture Details
+
+**ConvMLP (Baseline):** Two 1D causal convolution layers (64 filters, kernel size 3) encode the past trajectory, followed by a flatten layer and MLP decoder (128-unit hidden layer → 160-unit output reshaped to 80×2). Produces a single deterministic future trajectory.
+
+**MultiModalConvMLP:** Shares the same convolutional encoder and a 128-unit shared feature layer. Six separate Dense heads each predict an independent (80, 2) trajectory. A softmax confidence head predicts the probability distribution over modes. Trained with winner-takes-all: only the closest mode to ground truth receives gradient, encouraging specialization across heads.
 
 ## Tech Stack
 - Python, TensorFlow/Keras
-- Conv1D + MLP layers
-- Multi-modal architecture with winner-takes-all loss
-- YAML-based configuration management
-- TFRecord ingestion & preprocessing
-- Visualization (trajectory plots / GIFs)
-- Docker + reproducible environment
-
-## Recent Improvements
-**Multi-modal predictions** - Implemented 6-mode trajectory prediction with confidence scoring
-**Config-based experiment management** - YAML configuration system for reproducible research
-**Winner-takes-all loss** - Combined control and intent objectives for better multi-modal training
+- Google Compute Engine (GPU VM with Tesla T4)
+- Google Cloud Storage (streaming WOMD TFRecords)
+- Conv1D + MLP architecture, multi-modal WTA loss
+- YAML-based experiment configuration
+- TensorBoard for training monitoring
+- Docker for local reproducibility
 
 ## Future Work
-- Integrate map / road-graph context and neighboring agents for scene-aware predictions.
-- Extend to multi-agent interaction modeling with social context.
-- Experiment with Transformer or Graph Neural Network architectures for improved generalization.
-- Attention mechanisms for dynamic mode selection.
-- Scale to full dataset using cloud compute resources (Google Compute Engine).
+- Incorporate map and road graph context as model inputs
+- Model agent-agent interactions (social forces, attention over neighbors)
+- Explore Transformer and Graph Neural Network architectures
+- Increase trajectory modes with improved loss balancing
+- Investigate batch size sensitivity for WTA training at scale
 
 ---
 
-**Link:** [GitHub Repository](https://github.com/Gogo2015/WaymoMotionEstimator)  
+**Link:** [GitHub Repository](https://github.com/Gogo2015/WaymoMotionEstimator)

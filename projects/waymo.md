@@ -8,7 +8,7 @@ title: Waymo Motion Forecasting
 **Technical Report:** [ConvMLP Paper](https://github.com/Gogo2015/WaymoMotionEstimator/blob/main/ConvMLPPaper.pdf)
 
 ## Project Overview  
-This project implements trajectory prediction models on the Waymo Open Motion Dataset (WOMD). Given 1 second of past agent motion (10 timesteps at 10 Hz), the models forecast 8 seconds of future positions (80 timesteps). Both models were trained on the full WOMD training partition (250 TFRecord files) using a GPU-accelerated Google Compute Engine VM, streaming data directly from Google Cloud Storage.
+This project implements trajectory prediction models on the Waymo Open Motion Dataset (WOMD). Given 1 second of past agent motion (10 timesteps at 10 Hz), the models forecast 8 seconds of future positions (80 timesteps). Both models were trained on 250 TFRecord files (~25% of the WOMD training partition) using a GPU-accelerated Google Compute Engine VM, streaming data directly from Google Cloud Storage.
 
 Two architectures are implemented: a single-mode baseline (ConvMLP) and a multi-modal extension (MultiModalConvMLP) that predicts 6 possible future trajectories with confidence scores. Both operate on individual agent tracks without map or scene context.
 

@@ -4,27 +4,30 @@
   <div style="flex-grow: 1;">
 
     <h1 style="margin-top: 0;">Gaurav Mitra</h1>
-    <p><strong>MSCS @ Georgia Tech</strong></p>
+    <p><strong>MSCS @ Georgia Tech</strong> (AI/ML · graduating May 2027)</p>
 
-    <p>Machine Learning • Computer Vision • Motion Forecasting</p>
+    <p>Machine Learning · Computer Vision · Motion Forecasting</p>
 
-    <h2>Currently working on</h2>
+    <h2>Currently</h2>
     <ul>
-      <li>Waymo Open Motion Dataset trajectory prediction</li>
+      <li>Incoming SWE Intern @ IBM (summer 2026)</li>
+      <li>Pursuing ML research position in robotics (VLAMs / home robotics)</li>
     </ul>
 
     <h2>Previously</h2>
     <ul>
-      <li>Video compression autoencoders (variable-rate)</li>
-      <li>Software engineering + cloud systems (ARL internship)</li>
+      <li>Neural video compression autoencoders (variable-rate) — Oden Institute, UT Austin</li>
+      <li>Cloud infrastructure, containerization, CI/CD — Applied Research Laboratories</li>
     </ul>
 
     <h2>Projects</h2>
     <ul>
-      <li><a href="projects/waymo">Waymo Forecasting</a></li>
-      <li><a href="projects/autoencoder">Autoencoder</a></li>
+      <li><a href="projects/liver-transplant">Liver Transplant Outcome Prediction</a> — Best Project Award, CS 7641</li>
+      <li><a href="projects/waymo">Waymo Motion Forecasting</a> — 73% ADE reduction, multi-modal ConvMLP</li>
+      <li><a href="projects/gnn-homo-lumo">GNN Molecular Property Prediction</a> — HOMO-LUMO gap prediction, CS 7643</li>
       <li><a href="projects/llm-eval">LLM Semantic Syntax Evaluation</a></li>
       <li><a href="projects/earthquake">Earthquake Analysis Web App</a></li>
+      <li><a href="projects/autoencoder">Video Compression Autoencoder</a></li>
     </ul>
 
     <h2>Resume</h2>

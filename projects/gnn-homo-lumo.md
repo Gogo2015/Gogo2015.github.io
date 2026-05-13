@@ -78,4 +78,3 @@ The Virtual Node helps on medium-to-large molecules (21–40 atoms) where long-r
 ---
 
 **Repository:** [GitHub link](https://github.com/Gogo2015/GNN-HOMO-LUMO)
-**Report:** [Final_Report.pdf](../assets/gnn-homo-lumo/Final_Report.pdf)

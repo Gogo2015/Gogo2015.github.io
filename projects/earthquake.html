@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Earthquake Analysis Web App · Gaurav Mitra</title>
+<meta name="description" content="A containerized Flask REST API over USGS earthquake data with Redis storage, async job processing, and server-side charting, deployed to Kubernetes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+
+</head>
+<body>
+<header class="nav"><div class="nav-inner">
+  <a class="nav-brand" href="../index.html">Gaurav Mitra</a>
+  <nav class="nav-links">
+    <a href="../index.html#projects">Projects</a>
+    <a class="hide-sm" href="../resume.pdf">Resume</a>
+    <a href="https://github.com/Gogo2015" target="_blank" rel="noopener">GitHub</a>
+    <a class="hide-sm" href="https://linkedin.com/in/mitragaurav" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="mailto:mitragaurav10@gmail.com">Email</a>
+  </nav>
+</div></header>
+<main><div class="container narrow">
+  <div class="proj-header">
+    <a class="back-link" href="../index.html">← All projects</a>
+    <h1>Earthquake Analysis Web App</h1>
+    
+    <div class="proj-actions">
+      <a class="btn btn-primary" href="https://github.com/Gogo2015/EarthquakeAnalyzer" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+  </div>
+  <article class="prose">
+<h2>Project Overview</h2>
+<p>A containerized Flask API for ingesting, querying, and analyzing real-time earthquake data from the USGS. The system stores earthquake records in Redis, exposes a RESTful API with filtering and search capabilities, and processes analysis jobs asynchronously through a Redis-backed worker queue. The full stack is deployed to Kubernetes with separate test and production environments.</p>
+<h2>My Contributions</h2>
+<ul>
+<li>Designed and implemented the <strong>Flask REST API</strong> with 12 endpoints covering CRUD operations, parameterized filtering (by place, magnitude range, date range), and asynchronous job management.</li>
+<li>Built a <strong>multi-database Redis architecture</strong> using 4 separate Redis databases: raw earthquake data (DB 0), job queue (DB 1), job metadata (DB 2), and analysis results with generated images (DB 3).</li>
+<li>Implemented an <strong>asynchronous job processing system</strong> using HotQueue: the API enqueues jobs, a background worker dequeues and processes them, generates matplotlib visualizations, and stores both structured results and PNG images back in Redis.</li>
+<li>Developed two analysis pipelines:</li>
+<li><strong>Magnitude binning</strong>: Groups earthquakes into magnitude bins and generates distribution bar charts.</li>
+<li><strong>Hemisphere analysis</strong>: Categorizes earthquakes by geographic quadrant with per-hemisphere statistics (count, average magnitude, max magnitude) and visualization.</li>
+<li>Wrote <strong>integration and unit tests</strong> covering API endpoints, job lifecycle, and worker logic.</li>
+<li>Created full <strong>Kubernetes deployment manifests</strong> for both test and production environments: Flask, Redis, and Worker deployments, ClusterIP and NodePort services, PersistentVolumeClaims for Redis data, and Ingress configuration for external access.</li>
+<li>Containerized the application with <strong>Docker and Docker Compose</strong> for local development with multi-service orchestration.</li>
+</ul>
+<h2>System Architecture</h2>
+<p>The application runs as three coordinated services:</p>
+<ul>
+<li><strong>Flask API.</strong> Handles HTTP requests, manages data in Redis, creates and tracks jobs</li>
+<li><strong>Redis.</strong> Serves as both the primary data store (earthquake records) and the message broker (job queue + results)</li>
+<li><strong>Worker.</strong> Consumes jobs from the queue, runs analysis, generates charts, and writes results back to Redis</li>
+</ul>
+<p>Jobs follow a lifecycle: <code>submitted → in progress → complete/error</code>, with status queryable at any point through the API.</p>
+<h2>Key Design Decisions</h2>
+<ul>
+<li><strong>4 separate Redis databases</strong> isolate concerns (data, queue, jobs, results) without needing multiple Redis instances, keeping the deployment simple while maintaining logical separation.</li>
+<li><strong>HotQueue for job processing</strong> provides a lightweight alternative to Celery, appropriate for the scale of this application while still decoupling API response times from analysis compute.</li>
+<li><strong>Separate test and production Kubernetes manifests</strong> enable CI-style validation: the test deployment runs pytest on startup before promoting to production.</li>
+<li><strong>Image storage in Redis</strong> (via <code>hset</code> with binary data) keeps the architecture stateless, with no shared filesystem needed between API and worker containers.</li>
+</ul>
+<h2>Tech Stack</h2>
+<ul>
+<li>Python, Flask, Redis (multi-DB)</li>
+<li>HotQueue (async job queue)</li>
+<li>matplotlib (server-side visualization)</li>
+<li>Docker, Docker Compose</li>
+<li>Kubernetes (Deployments, Services, Ingress, PVC)</li>
+<li>pytest (integration + unit tests)</li>
+<li>USGS Earthquake API (GeoJSON)</li>
+</ul>
+<hr />
+<p><strong>Link:</strong> <a href="https://github.com/Gogo2015/EarthquakeAnalyzer">GitHub Repository</a></p>
+  </article>
+</div></main>
+<footer class="footer"><div class="container"><div class="footer-inner">
+  <span class="muted">© 2026 Gaurav Mitra</span>
+  <div class="footer-links">
+    <a href="mailto:mitragaurav10@gmail.com">Email</a>
+    <a href="https://github.com/Gogo2015" target="_blank" rel="noopener">GitHub</a>
+    <a href="https://linkedin.com/in/mitragaurav" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="../resume.pdf">Resume</a>
+  </div>
+</div></div></footer>
+</body>
+</html>

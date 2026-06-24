@@ -5,7 +5,7 @@ title: LLM Semantic Syntax Evaluation
 
 # LLM Semantic Syntax Evaluation
 **Repository:** [llm-semantic-syntax](https://github.com/Gogo2015/llm-semantic-syntax)
-**Course:** CS 6390 — Programming Languages (Final Project)
+**Course:** CS 6390, Programming Languages (Final Project)
 
 ## Project Overview
 This project evaluates how well large language models can generate semantically correct programs that combine arithmetic logic with graphical rendering. We prompt three LLMs to reconstruct five classic board games in Python using pygame, then automatically test the generated code across three error categories: syntax errors (detected at parse time), semantic errors (missing or incorrect game components), and game logic errors (incorrect win detection, collision handling, or state management).
@@ -13,7 +13,7 @@ This project evaluates how well large language models can generate semantically 
 ## My Contributions
 - Designed and built the **full automated evaluation pipeline**: syntax validation via `ast.parse` and `py_compile`, semantic checking through dynamic module loading and function signature verification, and game logic testing using headless pygame execution with mock rendering.
 - Wrote **prompt templates** for each game specifying rules, requirements, and expected function interfaces.
-- Ran experiments across three models (GPT-4o-mini, Claude 3 Sonnet, Gemini 2.0 Flash) with 20–100 repetitions per game per model at temperature 0.75.
+- Ran experiments across three models (GPT-4o-mini, Claude 3 Sonnet, Gemini 2.0 Flash) with 20-100 repetitions per game per model at temperature 0.75.
 - Analyzed results and identified significant performance gaps between models.
 
 ## Games Tested
@@ -59,11 +59,11 @@ Each game tests different combinations of state management, spatial reasoning, a
 
 ## Key Findings
 
-**Syntax correctness does not imply semantic correctness.** GPT-4o-mini and Claude 3 Sonnet achieved near-perfect syntax rates (99–100%) but semantic/logic pass rates varied dramatically by game — from 0% on Tic-Tac-Toe to 100% on Ball Bouncing. This confirms that LLMs can produce syntactically valid code that fails to implement the required game logic.
+**Syntax correctness does not imply semantic correctness.** GPT-4o-mini and Claude 3 Sonnet achieved near-perfect syntax rates (99-100%) but semantic/logic pass rates varied dramatically by game, from 0% on Tic-Tac-Toe to 100% on Ball Bouncing. This confirms that LLMs can produce syntactically valid code that fails to implement the required game logic.
 
 **Gemini 2.0 Flash struggled significantly with pygame code generation,** achieving only ~8% syntax correctness. The dominant failure modes were `IndentationError` and `SyntaxError: invalid character in identifier`, suggesting the model frequently produces non-ASCII characters or malformed indentation in code blocks.
 
-**Game complexity affects semantic pass rates non-uniformly.** Ball Bouncing (the simplest physics simulation) had 100% pass rates for GPT-4o-mini and Claude, while Tic-Tac-Toe — arguably a simpler game conceptually — had 0% semantic pass rates for both. This is largely attributable to the test framework requiring a specific `check_win(board, player)` function signature that models frequently deviated from, highlighting a limitation of rigid automated semantic testing.
+**Game complexity affects semantic pass rates non-uniformly.** Ball Bouncing (the simplest physics simulation) had 100% pass rates for GPT-4o-mini and Claude, while Tic-Tac-Toe, arguably a simpler game conceptually, had 0% semantic pass rates for both. This is largely attributable to the test framework requiring a specific `check_win(board, player)` function signature that models frequently deviated from, highlighting a limitation of rigid automated semantic testing.
 
 **Semantic pass rates closely tracked game logic pass rates** for GPT-4o-mini and Claude, suggesting that when these models produce structurally correct code (with the expected functions/classes), the underlying logic is usually correct as well.
 
@@ -71,9 +71,9 @@ Each game tests different combinations of state management, spatial reasoning, a
 
 The evaluation pipeline has three stages:
 
-1. **Syntax validation** — `ast.parse()` and `py_compile.compile()` check for parse-time errors before any execution.
-2. **Semantic checking** — The generated code is dynamically loaded as a module, and game-specific checkers verify the presence and basic functionality of required components (e.g., `check_win` for Tic-Tac-Toe, `Snake` class for Snake).
-3. **Game logic testing** — AST transformations remove blocking game loops and `if __name__` blocks, pygame is mocked for headless execution, and game functions are called with known inputs to verify correctness (e.g., testing win detection with a board state that should be a win).
+1. **Syntax validation.** `ast.parse()` and `py_compile.compile()` check for parse-time errors before any execution.
+2. **Semantic checking.** The generated code is dynamically loaded as a module, and game-specific checkers verify the presence and basic functionality of required components (e.g., `check_win` for Tic-Tac-Toe, `Snake` class for Snake).
+3. **Game logic testing.** AST transformations remove blocking game loops and `if __name__` blocks, pygame is mocked for headless execution, and game functions are called with known inputs to verify correctness (e.g., testing win detection with a board state that should be a win).
 
 ## Limitations & Future Work
 - **Rigid semantic checking**: The 0% semantic rate on Tic-Tac-Toe for GPT-4o-mini and Claude was caused by the checker requiring a specific `check_win(board, player)` signature. Many implementations used alternative names or signatures. Future work could use more flexible function discovery.

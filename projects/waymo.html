@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Waymo Motion Forecasting · Gaurav Mitra</title>
+<meta name="description" content="Trajectory prediction on the Waymo Open Motion Dataset, with a Conv-MLP baseline and a multi-modal extension predicting six futures with confidence.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+
+</head>
+<body>
+<header class="nav"><div class="nav-inner">
+  <a class="nav-brand" href="../index.html">Gaurav Mitra</a>
+  <nav class="nav-links">
+    <a href="../index.html#projects">Projects</a>
+    <a class="hide-sm" href="../resume.pdf">Resume</a>
+    <a href="https://github.com/Gogo2015" target="_blank" rel="noopener">GitHub</a>
+    <a class="hide-sm" href="https://linkedin.com/in/mitragaurav" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="mailto:mitragaurav10@gmail.com">Email</a>
+  </nav>
+</div></header>
+<main><div class="container narrow">
+  <div class="proj-header">
+    <a class="back-link" href="../index.html">← All projects</a>
+    <h1>Waymo Motion Forecasting</h1>
+    
+    <div class="proj-actions">
+      <a class="btn btn-primary" href="https://github.com/Gogo2015/WaymoMotionEstimator" target="_blank" rel="noopener">GitHub ↗</a>
+      <a class="btn" href="https://github.com/Gogo2015/WaymoMotionEstimator/blob/main/ConvMLPPaper.pdf" target="_blank" rel="noopener">Paper (PDF) ↗</a>
+    </div>
+  </div>
+  <article class="prose">
+<h2>Project Overview</h2>
+<p>This project implements trajectory prediction models on the Waymo Open Motion Dataset (WOMD). Given 1 second of past agent motion (10 timesteps at 10 Hz), the models forecast 8 seconds of future positions (80 timesteps). Both models were trained on 250 TFRecord files (~25% of the WOMD training partition) using a GPU-accelerated Google Compute Engine VM, streaming data directly from Google Cloud Storage.</p>
+<p>Two architectures are implemented: a single-mode baseline (ConvMLP) and a multi-modal extension (MultiModalConvMLP) that predicts 6 possible future trajectories with confidence scores. Both operate on individual agent tracks without map or scene context.</p>
+<h2>Results</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Avg Loss</th>
+<th>Avg ADE (m)</th>
+<th>Avg FDE (m)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ConvMLP</td>
+<td>434.36</td>
+<td>14.25</td>
+<td>31.83</td>
+</tr>
+<tr>
+<td>MultiModalConvMLP (best-of-6)</td>
+<td>87.35</td>
+<td>3.85</td>
+<td>10.32</td>
+</tr>
+</tbody>
+</table></div>
+<p>The multi-modal model achieves a <strong>73% reduction in ADE</strong> and <strong>68% reduction in FDE</strong> compared to the baseline, demonstrating that real-world motion is inherently multi-modal: a single predicted trajectory cannot capture the range of plausible futures (turning, lane changing, stopping), while offering six modes and selecting the best one dramatically improves accuracy.</p>
+<p><strong>Single-Mode Baseline:</strong></p>
+<figure><img alt="Trajectory comparison" src="https://raw.githubusercontent.com/Gogo2015/WaymoMotionEstimator/main/gifs/ConvMLP/test_agent_4.gif"><figcaption>The baseline produces straight-line extrapolations that diverge when the agent turns or brakes.</figcaption></figure>
+<p><strong>Multi-Modal Predictions:</strong></p>
+<p><img alt="Multimodal Predictions" src="https://raw.githubusercontent.com/Gogo2015/WaymoMotionEstimator/main/gifs/MultiModalConvMLP/test_agent_0.gif" />
+<img alt="Multimodal Predictions" src="https://raw.githubusercontent.com/Gogo2015/WaymoMotionEstimator/main/gifs/MultiModalConvMLP/test_agent_2.gif" /></p>
+<p><em>Six trajectory modes spread to cover distinct plausible futures, with the confidence head distributing probability across relevant modes.</em></p>
+<h2>My Contributions</h2>
+<ul>
+<li><strong>Designed and implemented both model architectures:</strong> a Conv1D + MLP baseline and a multi-modal extension with K=6 trajectory heads and a softmax confidence head.</li>
+<li><strong>Built the full training infrastructure on GCP.</strong> Provisioned a GPU VM, configured streaming data ingestion from Waymo's public GCS bucket, and managed training runs via screen sessions with checkpoint management.</li>
+<li><strong>Developed the winner-takes-all loss.</strong> It combines a control loss (regression on the best-matching trajectory mode) with an intent loss (cross-entropy encouraging the confidence head to identify the correct mode).</li>
+<li><strong>Identified and fixed a critical data preprocessing bug.</strong> The past validity mask was parsed but never applied, allowing agents with invalid past timesteps into training. This corrupted the coordinate normalization (which computes translation and rotation from the last observed positions), causing exploding predictions. The fix filters to agents with all past timesteps valid, which was essential for stable training. (See technical report for details.)</li>
+<li><strong>Built the data pipeline:</strong> TFRecord parsing, coordinate normalization (translate to origin, rotate to align heading with +x axis), validity mask handling, and train/val splitting.</li>
+<li><strong>Established config-based experiment management:</strong> YAML configuration files for reproducible experiments with automatic timestamped logging and checkpoint saving.</li>
+<li><strong>Evaluation and visualization:</strong> ADE/FDE metrics with validity-aware computation, animated GIF generation comparing predicted vs. ground truth trajectories, and dynamic checkpoint resolution for evaluation.</li>
+</ul>
+<h2>Architecture Details</h2>
+<p><strong>ConvMLP (Baseline):</strong> Two 1D causal convolution layers (64 filters, kernel size 3) encode the past trajectory, followed by a flatten layer and MLP decoder (128-unit hidden layer → 160-unit output reshaped to 80×2). Produces a single deterministic future trajectory.</p>
+<p><strong>MultiModalConvMLP:</strong> Shares the same convolutional encoder and a 128-unit shared feature layer. Six separate Dense heads each predict an independent (80, 2) trajectory. A softmax confidence head predicts the probability distribution over modes. Trained with winner-takes-all: only the closest mode to ground truth receives gradient, encouraging specialization across heads.</p>
+<h2>Tech Stack</h2>
+<ul>
+<li>Python, TensorFlow/Keras</li>
+<li>Google Compute Engine (GPU VM with Tesla T4)</li>
+<li>Google Cloud Storage (streaming WOMD TFRecords)</li>
+<li>Conv1D + MLP architecture, multi-modal WTA loss</li>
+<li>YAML-based experiment configuration</li>
+<li>TensorBoard for training monitoring</li>
+<li>Docker for local reproducibility</li>
+</ul>
+<h2>Future Work</h2>
+<ul>
+<li>Incorporate map and road graph context as model inputs</li>
+<li>Model agent-agent interactions (social forces, attention over neighbors)</li>
+<li>Explore Transformer and Graph Neural Network architectures</li>
+<li>Increase trajectory modes with improved loss balancing</li>
+<li>Investigate batch size sensitivity for WTA training at scale</li>
+</ul>
+<hr />
+<p><strong>Link:</strong> <a href="https://github.com/Gogo2015/WaymoMotionEstimator">GitHub Repository</a></p>
+  </article>
+</div></main>
+<footer class="footer"><div class="container"><div class="footer-inner">
+  <span class="muted">© 2026 Gaurav Mitra</span>
+  <div class="footer-links">
+    <a href="mailto:mitragaurav10@gmail.com">Email</a>
+    <a href="https://github.com/Gogo2015" target="_blank" rel="noopener">GitHub</a>
+    <a href="https://linkedin.com/in/mitragaurav" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="../resume.pdf">Resume</a>
+  </div>
+</div></div></footer>
+</body>
+</html>

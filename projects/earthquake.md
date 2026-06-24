@@ -24,17 +24,17 @@ A containerized Flask API for ingesting, querying, and analyzing real-time earth
 
 The application runs as three coordinated services:
 
-- **Flask API** — Handles HTTP requests, manages data in Redis, creates and tracks jobs
-- **Redis** — Serves as both the primary data store (earthquake records) and the message broker (job queue + results)
-- **Worker** — Consumes jobs from the queue, runs analysis, generates charts, and writes results back to Redis
+- **Flask API.** Handles HTTP requests, manages data in Redis, creates and tracks jobs
+- **Redis.** Serves as both the primary data store (earthquake records) and the message broker (job queue + results)
+- **Worker.** Consumes jobs from the queue, runs analysis, generates charts, and writes results back to Redis
 
 Jobs follow a lifecycle: `submitted → in progress → complete/error`, with status queryable at any point through the API.
 
 ## Key Design Decisions
-- **4 separate Redis databases** isolate concerns (data, queue, jobs, results) without needing multiple Redis instances — keeping the deployment simple while maintaining logical separation.
+- **4 separate Redis databases** isolate concerns (data, queue, jobs, results) without needing multiple Redis instances, keeping the deployment simple while maintaining logical separation.
 - **HotQueue for job processing** provides a lightweight alternative to Celery, appropriate for the scale of this application while still decoupling API response times from analysis compute.
 - **Separate test and production Kubernetes manifests** enable CI-style validation: the test deployment runs pytest on startup before promoting to production.
-- **Image storage in Redis** (via `hset` with binary data) keeps the architecture stateless — no shared filesystem needed between API and worker containers.
+- **Image storage in Redis** (via `hset` with binary data) keeps the architecture stateless, with no shared filesystem needed between API and worker containers.
 
 ## Tech Stack
 - Python, Flask, Redis (multi-DB)

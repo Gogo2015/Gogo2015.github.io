@@ -1,0 +1,6 @@
+# Local Claude Code tooling / preview config
+.claude/
+
+# Python
+__pycache__/
+*.pyc

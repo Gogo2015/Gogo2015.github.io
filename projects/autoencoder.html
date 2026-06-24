@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Video Compression Autoencoder · Gaurav Mitra</title>
+<meta name="description" content="A quantized 3D-convolutional autoencoder for video compression, with tunable codebook sizes controlling the rate-distortion tradeoff on Moving MNIST.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+
+</head>
+<body>
+<header class="nav"><div class="nav-inner">
+  <a class="nav-brand" href="../index.html">Gaurav Mitra</a>
+  <nav class="nav-links">
+    <a href="../index.html#projects">Projects</a>
+    <a class="hide-sm" href="../resume.pdf">Resume</a>
+    <a href="https://github.com/Gogo2015" target="_blank" rel="noopener">GitHub</a>
+    <a class="hide-sm" href="https://linkedin.com/in/mitragaurav" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="mailto:mitragaurav10@gmail.com">Email</a>
+  </nav>
+</div></header>
+<main><div class="container narrow">
+  <div class="proj-header">
+    <a class="back-link" href="../index.html">← All projects</a>
+    <h1>Quantized Video Compression Autoencoder</h1>
+    
+    <div class="proj-actions">
+      <a class="btn btn-primary" href="https://github.com/Gogo2015/ae_compressed_vision" target="_blank" rel="noopener">GitHub ↗</a>
+      <a class="btn" href="https://github.com/Gogo2015/ae_compressed_vision/blob/main/AutoencoderPaper.pdf" target="_blank" rel="noopener">Paper (PDF) ↗</a>
+    </div>
+  </div>
+  <article class="prose">
+<h2>Project Overview</h2>
+<p>This project implements a quantized convolutional autoencoder for video compression. It reduces video frame sequences into discrete latent codes via a tunable codebook, enabling control over bitrate vs reconstruction quality (rate-distortion trade-off). </p>
+<h2>My Contributions</h2>
+<ul>
+<li>Developed encoder/decoder architecture: 3D CNN encoder + transposed convolution decoder.</li>
+<li>Implemented quantized latent space: discrete codebook sizes (K = {2, 4, 8, 16,32,…}) to adjust bitrate.</li>
+<li>Built data pipeline on Moving MNIST dataset, training scripts, and reconstruction visualizations.  </li>
+<li>Analysed rate-distortion curves and documented results in technical report.</li>
+</ul>
+<h2>Results &amp; Insights</h2>
+<ul>
+<li>Clear demonstration of the trade-off between codebook size (bitrate) and reconstruction quality.  </li>
+<li>Insight: Larger codebook sizes yield diminishing returns in reconstruction fidelity, informing future work in efficient latent representations.  </li>
+<li>Learned: The practical challenges of latent quantization, managing under-training for high K values, and integrating autoencoding in a video pipeline.</li>
+</ul>
+<h2>Tech Stack</h2>
+<ul>
+<li>Python, PyTorch  </li>
+<li>3D Convolutional Neural Networks  </li>
+<li>Latent quantization (codebooks)  </li>
+<li>Visualization scripts &amp; rate-distortion graphs  </li>
+</ul>
+<h2>Future Work</h2>
+<ul>
+<li>Extend to full video dataset (beyond Moving MNIST) for real-world scale.  </li>
+<li>Integrate IP-frame / P-frame structure for real-time/streaming applications.</li>
+<li>Explore transformer or hybrid architectures to further improve compression-reconstruction trade-off.</li>
+</ul>
+<p><strong>Link:</strong> <a href="https://github.com/Gogo2015/ae_compressed_vision">GitHub Repository</a></p>
+  </article>
+</div></main>
+<footer class="footer"><div class="container"><div class="footer-inner">
+  <span class="muted">© 2026 Gaurav Mitra</span>
+  <div class="footer-links">
+    <a href="mailto:mitragaurav10@gmail.com">Email</a>
+    <a href="https://github.com/Gogo2015" target="_blank" rel="noopener">GitHub</a>
+    <a href="https://linkedin.com/in/mitragaurav" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="../resume.pdf">Resume</a>
+  </div>
+</div></div></footer>
+</body>
+</html>

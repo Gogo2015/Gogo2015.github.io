@@ -5,7 +5,7 @@ title: Liver Transplant Outcome Prediction
 
 # Liver Transplant Outcome Prediction
 **Repository:** [liver-transplant-ml](https://github.com/Gogo2015/liver-transplant-ml)
-**Course:** CS 7641 — Machine Learning (Georgia Tech) · **Best Project Award**
+**Course:** CS 7641, Machine Learning (Georgia Tech) · **Best Project Award**
 **Team:** Anushka Bajpai · Madhavan Balasubramaniam · Sanjay Gorur · Ameel Jani · Gaurav Mitra
 **Clinical Advisor:** Dr. Marwan Kazimi
 
@@ -18,7 +18,7 @@ Chronological train/test split: 2007-2020 (train) / 2021-2024 (test) to prevent 
 > Raw data is not publicly redistributable under the SRTR Data Use Agreement.
 
 ## My Contributions
-- Designed and implemented the full preprocessing pipeline: sentinel-code replacement (UNOS codes 997/998/999), structural imputation strategy (N/U/0 fills for absent flags and untested serology), mode imputation for nominal clinical codes, median imputation for right-skewed labs, and KNN imputation for correlated lab groups — all fit exclusively on the training set.
+- Designed and implemented the full preprocessing pipeline: sentinel-code replacement (UNOS codes 997/998/999), structural imputation strategy (N/U/0 fills for absent flags and untested serology), mode imputation for nominal clinical codes, median imputation for right-skewed labs, and KNN imputation for correlated lab groups, all fit exclusively on the training set.
 - Built two encoding pipelines: one-hot encoding for Cox PH, Random Forest, and XGBoost; label encoding for tree-based survival models (RSF and GBST), avoiding the memory and sparsity issues of OHE expansion for scikit-survival models.
 - Implemented the XGBoost horizon-based classifiers (1-year, 3-year, 5-year graft failure) with winner-takes-all threshold selection, class-weight balancing, and early stopping against a held-out validation split.
 - Ran the K-Means clustering and PCA analysis: identified k=40 as optimal by silhouette analysis, discovered clinically interpretable patient subgroups including a high-risk cohort of critically ill recipients paired with older donors.
@@ -48,7 +48,7 @@ C-index is Harrell's concordance index: 0.5 = random, 1.0 = perfect ranking of p
 
 **Censored outcomes require survival models.** XGBoost with a fixed horizon excludes patients censored before the threshold, which biases the training distribution. Cox PH, RSF, and GBST handle censoring by construction. The 5-year XGBoost result is unreliable on the 2021-2024 test cohort because few patients have reached five-year follow-up.
 
-**Clustering revealed what the models struggled with.** The subgroup that concentrated the worst graft outcomes — critically ill recipients (`MED_COND_TRR=1`, `LIFE_SUP_TRR=1`) paired with older donors — is also the group where clinical judgment has the least quantitative guidance.
+**Clustering revealed what the models struggled with.** The subgroup that concentrated the worst graft outcomes, critically ill recipients (`MED_COND_TRR=1`, `LIFE_SUP_TRR=1`) paired with older donors, is also the group where clinical judgment has the least quantitative guidance.
 
 ## Tech Stack
 - Python, scikit-learn, scikit-survival, lifelines, XGBoost

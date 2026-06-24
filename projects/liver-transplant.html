@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Liver Transplant Outcome Prediction · Gaurav Mitra</title>
+<meta name="description" content="A full ML pipeline on the OPTN/SRTR national registry predicting graft failure with classification and survival analysis across ~87k transplants.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+
+</head>
+<body>
+<header class="nav"><div class="nav-inner">
+  <a class="nav-brand" href="../index.html">Gaurav Mitra</a>
+  <nav class="nav-links">
+    <a href="../index.html#projects">Projects</a>
+    <a class="hide-sm" href="../resume.pdf">Resume</a>
+    <a href="https://github.com/Gogo2015" target="_blank" rel="noopener">GitHub</a>
+    <a class="hide-sm" href="https://linkedin.com/in/mitragaurav" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="mailto:mitragaurav10@gmail.com">Email</a>
+  </nav>
+</div></header>
+<main><div class="container narrow">
+  <div class="proj-header">
+    <a class="back-link" href="../index.html">← All projects</a>
+    <h1>Liver Transplant Outcome Prediction</h1>
+    <div class="proj-meta"><div class="row"><b>Course:</b> CS 7641, Machine Learning (Georgia Tech)</div><div class="row"><b>Team:</b> Anushka Bajpai · Madhavan Balasubramaniam · Sanjay Gorur · Ameel Jani · Gaurav Mitra</div><div class="row"><b>Clinical Advisor:</b> Dr. Marwan Kazimi</div></div>
+    <div class="proj-actions">
+      <a class="btn btn-primary" href="https://github.com/Gogo2015/liver-transplant-ml" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+  </div>
+  <article class="prose">
+<h2>Project Overview</h2>
+<p>The MELD score effectively measures how sick a patient is before transplant, but it does not predict whether a given donor-recipient pair will result in a functioning graft. We built a full ML pipeline on the OPTN/SRTR national liver transplant registry (2007-2024) to predict graft failure from features available at the time of transplant, across both classification and survival-analysis formulations.</p>
+<p><strong>Dataset:</strong> ~87,000 adult transplants after filtering, 416 raw columns reduced to 113 predictors.
+Chronological train/test split: 2007-2020 (train) / 2021-2024 (test) to prevent temporal leakage.</p>
+<blockquote>
+<p>Raw data is not publicly redistributable under the SRTR Data Use Agreement.</p>
+</blockquote>
+<h2>My Contributions</h2>
+<ul>
+<li>Designed and implemented the full preprocessing pipeline: sentinel-code replacement (UNOS codes 997/998/999), structural imputation strategy (N/U/0 fills for absent flags and untested serology), mode imputation for nominal clinical codes, median imputation for right-skewed labs, and KNN imputation for correlated lab groups, all fit exclusively on the training set.</li>
+<li>Built two encoding pipelines: one-hot encoding for Cox PH, Random Forest, and XGBoost; label encoding for tree-based survival models (RSF and GBST), avoiding the memory and sparsity issues of OHE expansion for scikit-survival models.</li>
+<li>Implemented the XGBoost horizon-based classifiers (1-year, 3-year, 5-year graft failure) with winner-takes-all threshold selection, class-weight balancing, and early stopping against a held-out validation split.</li>
+<li>Ran the K-Means clustering and PCA analysis: identified k=40 as optimal by silhouette analysis, discovered clinically interpretable patient subgroups including a high-risk cohort of critically ill recipients paired with older donors.</li>
+<li>Contributed to the Cox PH implementation with forest plot, Kaplan-Meier stratification by risk quartile, and Schoenfeld residual diagnostics.</li>
+</ul>
+<h2>Models and Results</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Type</th>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cox Proportional Hazards</td>
+<td>Survival</td>
+<td>C-index (test)</td>
+<td>0.5823</td>
+</tr>
+<tr>
+<td>Random Forest</td>
+<td>Classification</td>
+<td>AUROC (test)</td>
+<td>~0.62</td>
+</tr>
+<tr>
+<td>Random Survival Forest</td>
+<td>Survival</td>
+<td>C-index (test)</td>
+<td>0.6122</td>
+</tr>
+<tr>
+<td>Gradient Boosted Survival Trees</td>
+<td>Survival</td>
+<td>C-index (test)</td>
+<td>&gt;0.61</td>
+</tr>
+<tr>
+<td>XGBoost (1-year horizon)</td>
+<td>Classification</td>
+<td>AUROC (test)</td>
+<td>~0.61</td>
+</tr>
+<tr>
+<td>XGBoost (3-year horizon)</td>
+<td>Classification</td>
+<td>AUROC (test)</td>
+<td>~0.64</td>
+</tr>
+<tr>
+<td>K-Means (k=40, 90 PCs)</td>
+<td>Unsupervised</td>
+<td>Silhouette</td>
+<td>0.127</td>
+</tr>
+</tbody>
+</table></div>
+<p>RSF and GBST were tuned in two phases using two-phase grid search on Georgia Tech's PACE HPC cluster (SLURM array jobs). RSF Phase 1 best config: <code>n_estimators=100</code>, <code>min_samples_leaf=20</code>, <code>max_features='sqrt'</code> (OOB C-index: 0.6055).</p>
+<p>C-index is Harrell's concordance index: 0.5 = random, 1.0 = perfect ranking of patient risk.</p>
+<h2>Key Findings</h2>
+<p><strong>Temporal leakage is the critical correctness concern.</strong> A random train/test split would allow transplants from 2021 to appear in training, and the model learns patterns from future medical practice. Chronological splitting revealed that test-set event rates differ substantially (recent cohort has shorter follow-up, so fewer graft failures are recorded yet), which is expected and clinically meaningful.</p>
+<p><strong>Sentinel codes are not missing data.</strong> UNOS uses codes like 998 ("unknown") that are not NaN but should not be treated as valid numeric values. Imputing them as-is would introduce misleading correlations.</p>
+<p><strong>Censored outcomes require survival models.</strong> XGBoost with a fixed horizon excludes patients censored before the threshold, which biases the training distribution. Cox PH, RSF, and GBST handle censoring by construction. The 5-year XGBoost result is unreliable on the 2021-2024 test cohort because few patients have reached five-year follow-up.</p>
+<p><strong>Clustering revealed what the models struggled with.</strong> The subgroup that concentrated the worst graft outcomes, critically ill recipients (<code>MED_COND_TRR=1</code>, <code>LIFE_SUP_TRR=1</code>) paired with older donors, is also the group where clinical judgment has the least quantitative guidance.</p>
+<h2>Tech Stack</h2>
+<ul>
+<li>Python, scikit-learn, scikit-survival, lifelines, XGBoost</li>
+<li>pandas, numpy (preprocessing pipeline)</li>
+<li>KNNImputer, VarianceThreshold, OneHotEncoder</li>
+<li>RandomSurvivalForest, GradientBoostingSurvivalAnalysis (sksurv)</li>
+<li>CoxPHFitter (lifelines) with L2 regularization</li>
+<li>PCA + KMeans (unsupervised phenotyping)</li>
+<li>SLURM / PACE HPC cluster (RSF and GBST Phase 2 tuning)</li>
+<li>matplotlib, seaborn (forest plots, KM curves, Schoenfeld residuals)</li>
+</ul>
+<hr />
+<p><strong>Link:</strong> <a href="https://github.com/Gogo2015/liver-transplant-ml">GitHub Repository</a></p>
+  </article>
+</div></main>
+<footer class="footer"><div class="container"><div class="footer-inner">
+  <span class="muted">© 2026 Gaurav Mitra</span>
+  <div class="footer-links">
+    <a href="mailto:mitragaurav10@gmail.com">Email</a>
+    <a href="https://github.com/Gogo2015" target="_blank" rel="noopener">GitHub</a>
+    <a href="https://linkedin.com/in/mitragaurav" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="../resume.pdf">Resume</a>
+  </div>
+</div></div></footer>
+</body>
+</html>

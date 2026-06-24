@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VLATune · Gaurav Mitra</title>
+<meta name="description" content="Reward-weighted filtered behavior cloning for flow-matching VLAs on LIBERO. A study of whether lightweight RL can improve SmolVLA, with a negative result.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+
+</head>
+<body>
+<header class="nav"><div class="nav-inner">
+  <a class="nav-brand" href="../index.html">Gaurav Mitra</a>
+  <nav class="nav-links">
+    <a href="../index.html#projects">Projects</a>
+    <a class="hide-sm" href="../resume.pdf">Resume</a>
+    <a href="https://github.com/Gogo2015" target="_blank" rel="noopener">GitHub</a>
+    <a class="hide-sm" href="https://linkedin.com/in/mitragaurav" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="mailto:mitragaurav10@gmail.com">Email</a>
+  </nav>
+</div></header>
+<main><div class="container narrow">
+  <div class="proj-header">
+    <a class="back-link" href="../index.html">← All projects</a>
+    <h1>VLATune: Reward-Weighted Behavior Cloning for Flow-Matching VLAs</h1>
+    <div class="proj-meta"><div class="row"><b>Model:</b> SmolVLA (450M) &nbsp;·&nbsp; <b>Benchmark:</b> LIBERO</div></div>
+    <div class="proj-actions">
+      <a class="btn btn-primary" href="https://github.com/Gogo2015/VLATune" target="_blank" rel="noopener">GitHub ↗</a>
+      <a class="btn" href="https://github.com/Gogo2015/VLATune/blob/main/paper/main.pdf" target="_blank" rel="noopener">Paper (PDF) ↗</a>
+    </div>
+  </div>
+  <article class="prose">
+<h2>The Question</h2>
+<p>Vision-language-action (VLA) models tend to plateau under supervised fine-tuning, and reinforcement learning is the obvious next thing to try. The problem: modern VLAs generate actions with a <strong>flow-matching denoiser</strong>, which gives no tractable per-action log-probability, so PPO does not apply directly.</p>
+<p>This project asks whether a lighter, flow-matching-compatible RL step can do better: <strong>filtered and reward-weighted behavior cloning</strong> on a policy's own successful rollouts, kept close to the SFT policy by a vector-field trust-region anchor. The model is SmolVLA (450M), the benchmark is LIBERO, and the whole pipeline runs on one consumer GPU plus preemptible Colab, about <strong>$20-60 of compute</strong>.</p>
+<blockquote>
+<p>The short answer is <strong>no</strong>, and the negative result is the contribution. On both a saturated in-distribution suite (LIBERO-Goal) and an unsaturated, demo-seeded one (<code>libero_10</code>), success rises for one RL iteration and then falls back to where it started. The apparent gain is a reshuffling of success across tasks, inside measurement noise.</p>
+</blockquote>
+<p>What the project delivers is the method itself, a paired collection-equals-evaluation protocol, and an honest account of where this kind of RL can and cannot move a flow-matching policy.</p>
+<h2>Method</h2>
+<ol>
+<li><strong>SFT.</strong> Fine-tune <code>smolvla_base</code> on the LIBERO-Goal episodes, and separately train a <code>libero_10</code> specialist. This is the launch point and the frozen anchor, <code>π_SFT</code>.</li>
+<li><strong>RL loop.</strong> For one outer iteration: roll out the current policy, keep the successful trajectories (weighted by a free time-to-success signal), and keep training on them with the flow-matching loss. A vector-field distillation penalty, <code>β·‖v_θ − v_SFT‖²</code>, holds the policy near <code>π_SFT</code> and stands in for an intractable marginal KL. Repeat, and stop early if a step regresses.</li>
+<li><strong>Demo-seed.</strong> A goal-only policy scores about 0% zero-shot on <code>libero_10</code>, so the success filter has nothing to keep. Training a <code>libero_10</code> specialist first lifts it off the floor. Only then does the loop have anything to work with.</li>
+<li><strong>Collection equals evaluation.</strong> The rollout success predicate is exactly LeRobot's <code>pc_success</code>, so each iteration's collection doubles as that policy's per-task evaluation, paired on identical seeds across <code>π_0</code>, <code>π_1</code>, and <code>π_2</code>.</li>
+</ol>
+<h2>Results</h2>
+<p>Success rates are <code>pc_success</code> (%). RL trajectories are paired on identical seeds across iterations.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Suite</th>
+<th>n</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Official baseline (<code>smolvla_libero</code>)</td>
+<td>LIBERO-Goal</td>
+<td>100</td>
+<td>85.0</td>
+</tr>
+<tr>
+<td>Goal SFT (ours, 16k/20k steps)</td>
+<td>LIBERO-Goal</td>
+<td>100</td>
+<td>89.0 (+4.0, within noise)</td>
+</tr>
+<tr>
+<td>RL: filtered BC, β=10</td>
+<td>LIBERO-Goal</td>
+<td>500 (paired)</td>
+<td>89.0 → 91.0 → 89.4</td>
+</tr>
+<tr>
+<td>Zero-shot probe (goal-only policy)</td>
+<td><code>libero_10</code></td>
+<td>10/task</td>
+<td>~0 (filter starves)</td>
+</tr>
+<tr>
+<td>Demo-seed SFT</td>
+<td><code>libero_10</code></td>
+<td>100</td>
+<td>50.0</td>
+</tr>
+<tr>
+<td>RL: filtered BC, β=10</td>
+<td><code>libero_10</code></td>
+<td>20/task (paired)</td>
+<td>44.0 → 47.5 → 42.5</td>
+</tr>
+</tbody>
+</table></div>
+<figure><img alt="Success across RL iterations rises then falls in both regimes" src="https://raw.githubusercontent.com/Gogo2015/VLATune/main/results/figures/figure1_trajectories.png"><figcaption>Success rises for one RL iteration and then falls back, in both the saturated (LIBERO-Goal) and demo-seeded (<code>libero_10</code>) regimes.</figcaption></figure>
+<p>Two mechanisms sit behind the flat result:</p>
+<ul>
+<li><strong>Rescue, then reversal.</strong> The first iteration lifts marginal tasks that <code>π_0</code> already solved a few times (<code>libero_10</code> t3 goes 60 → 75, t7 goes 25 → 40). The second iteration hands those same tasks back (t3 → 55, t7 → 25).</li>
+<li><strong>Starvation floor.</strong> A task with zero seed successes (<code>libero_10</code> t8) gives the filter nothing to imitate, so it stays at zero.</li>
+</ul>
+<figure><img alt="Per-task success across iterations" src="https://raw.githubusercontent.com/Gogo2015/VLATune/main/results/figures/figure2_pertask.png"><figcaption>Per-task detail: the aggregate flatness hides a reshuffling, where some tasks rescued in iteration 1 are given back in iteration 2.</figcaption></figure>
+<h2>What I Built</h2>
+<ul>
+<li><strong>The method.</strong> Reward-weighted, filtered behavior cloning compatible with a flow-matching action head (sidestepping PPO's need for a tractable per-action log-probability), with a vector-field distillation anchor (<code>β·‖v_θ − v_SFT‖²</code>, β=10) that substitutes for an intractable marginal KL.</li>
+<li><strong>A paired collection-equals-evaluation protocol.</strong> Reusing LeRobot's <code>pc_success</code> as the rollout filter means each RL iteration's data collection doubles as that policy's per-task evaluation, paired on identical seeds across <code>π_0/π_1/π_2</code>, so the measured deltas are clean.</li>
+<li><strong>The full SFT + RL pipeline</strong> on a tight compute budget: SFT and fine-tuning on an A100 (GPU-bound), rollouts and evaluation on an L4 (sim/CPU-bound), checkpoints and rollout tensors on Drive.</li>
+<li><strong>The demo-seed insight</strong> that makes RL viable on an unsaturated suite: a goal-only policy starves the success filter at ~0%, so a <code>libero_10</code> specialist has to lift it off the floor first.</li>
+</ul>
+<h2>Five fixes the SFT pipeline needed</h2>
+<p>The LeRobot + LIBERO stack had several sharp edges that the runbook documents:</p>
+<ol>
+<li>Pass <code>--policy.push_to_hub=false</code>, or <code>lerobot-train</code> aborts asking for a <code>repo_id</code>.</li>
+<li><code>HuggingFaceVLA/libero</code> has a broken episode-to-file index. Download the full <code>data/</code> and <code>meta/</code> once (~35 GB), then filter on the in-row <code>episode_index</code> column.</li>
+<li>Rename the cameras (<code>image</code> → <code>camera1</code>, <code>image2</code> → <code>camera2</code>); the base model expects three.</li>
+<li>Use the same <code>rename_map</code> at eval, since the checkpoint inherits the <code>camera1/2/3</code> keys.</li>
+<li>Create <code>~/.libero/config.yaml</code> ahead of time so eval subprocesses don't hit <code>EOFError</code> on the import prompt.</li>
+</ol>
+<h2>On the Negative Result</h2>
+<p>The flat result is reported as one, not dressed up as a win. The +4.0 SFT gain over baseline sits inside the n=100 confidence interval, so it is not a claim. The SFT stage delivers a working pipeline and a clean starting point for RL, and that is what it is good for. A real positive claim would need n=500 and at least three seeds (tens of hours on <code>libero_10</code>'s slow renderer), but the up-then-down trajectory already reads as noise by the same standard.</p>
+<h2>Tech Stack</h2>
+<ul>
+<li><code>lerobot 0.5.1</code>, <code>torch 2.10.0+cu128</code>, <code>transformers 5.3.0</code>, Python 3.12</li>
+<li>SmolVLA (flow-matching VLA, 450M) · LIBERO simulation benchmark</li>
+<li>Reward-weighted filtered BC + vector-field distillation anchor</li>
+<li>A100 (SFT / fine-tune) + L4 (rollouts / eval), MuJoCo EGL rendering</li>
+<li>Paired per-task evaluation via LeRobot <code>pc_success</code></li>
+<li>LaTeX technical report</li>
+</ul>
+  </article>
+</div></main>
+<footer class="footer"><div class="container"><div class="footer-inner">
+  <span class="muted">© 2026 Gaurav Mitra</span>
+  <div class="footer-links">
+    <a href="mailto:mitragaurav10@gmail.com">Email</a>
+    <a href="https://github.com/Gogo2015" target="_blank" rel="noopener">GitHub</a>
+    <a href="https://linkedin.com/in/mitragaurav" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="../resume.pdf">Resume</a>
+  </div>
+</div></div></footer>
+</body>
+</html>

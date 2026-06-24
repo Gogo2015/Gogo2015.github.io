@@ -18,14 +18,14 @@ This project implements a quantized convolutional autoencoder for video compress
 
 ## Results & Insights  
 - Clear demonstration of the trade-off between codebook size (bitrate) and reconstruction quality.  
-- Insight: Larger codebook sizes yield diminishing returns in reconstruction fidelity — informing future work in efficient latent representations.  
+- Insight: Larger codebook sizes yield diminishing returns in reconstruction fidelity, informing future work in efficient latent representations.  
 - Learned: The practical challenges of latent quantization, managing under-training for high K values, and integrating autoencoding in a video pipeline.
 
 ## Tech Stack  
 - Python, PyTorch  
 - 3D Convolutional Neural Networks  
 - Latent quantization (codebooks)  
-- Visualization scripts & rate–distortion graphs  
+- Visualization scripts & rate-distortion graphs  
 
 ## Future Work  
 - Extend to full video dataset (beyond Moving MNIST) for real-world scale.  

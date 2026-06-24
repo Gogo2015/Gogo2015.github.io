@@ -19,7 +19,7 @@ Two architectures are implemented: a single-mode baseline (ConvMLP) and a multi-
 | ConvMLP | 434.36 | 14.25 | 31.83 |
 | MultiModalConvMLP (best-of-6) | 87.35 | 3.85 | 10.32 |
 
-The multi-modal model achieves a **73% reduction in ADE** and **68% reduction in FDE** compared to the baseline, demonstrating that real-world motion is inherently multi-modal — a single predicted trajectory cannot capture the range of plausible futures (turning, lane changing, stopping), while offering six modes and selecting the best one dramatically improves accuracy.
+The multi-modal model achieves a **73% reduction in ADE** and **68% reduction in FDE** compared to the baseline, demonstrating that real-world motion is inherently multi-modal: a single predicted trajectory cannot capture the range of plausible futures (turning, lane changing, stopping), while offering six modes and selecting the best one dramatically improves accuracy.
 
 **Single-Mode Baseline:**
 
@@ -36,13 +36,13 @@ The multi-modal model achieves a **73% reduction in ADE** and **68% reduction in
 
 ## My Contributions
 
-- **Designed and implemented both model architectures** — a Conv1D + MLP baseline and a multi-modal extension with K=6 trajectory heads and a softmax confidence head.
-- **Built the full training infrastructure on GCP** — provisioned a GPU VM, configured streaming data ingestion from Waymo's public GCS bucket, and managed training runs via screen sessions with checkpoint management.
-- **Developed the winner-takes-all loss** — combines a control loss (regression on the best-matching trajectory mode) with an intent loss (cross-entropy encouraging the confidence head to identify the correct mode).
-- **Identified and fixed a critical data preprocessing bug** — the past validity mask was parsed but never applied, allowing agents with invalid past timesteps into training. This corrupted the coordinate normalization (which computes translation and rotation from the last observed positions), causing exploding predictions. The fix filters to agents with all past timesteps valid, which was essential for stable training. (See technical report for details.)
-- **Built the data pipeline** — TFRecord parsing, coordinate normalization (translate to origin, rotate to align heading with +x axis), validity mask handling, and train/val splitting.
-- **Established config-based experiment management** — YAML configuration files for reproducible experiments with automatic timestamped logging and checkpoint saving.
-- **Evaluation and visualization** — ADE/FDE metrics with validity-aware computation, animated GIF generation comparing predicted vs. ground truth trajectories, and dynamic checkpoint resolution for evaluation.
+- **Designed and implemented both model architectures:** a Conv1D + MLP baseline and a multi-modal extension with K=6 trajectory heads and a softmax confidence head.
+- **Built the full training infrastructure on GCP.** Provisioned a GPU VM, configured streaming data ingestion from Waymo's public GCS bucket, and managed training runs via screen sessions with checkpoint management.
+- **Developed the winner-takes-all loss.** It combines a control loss (regression on the best-matching trajectory mode) with an intent loss (cross-entropy encouraging the confidence head to identify the correct mode).
+- **Identified and fixed a critical data preprocessing bug.** The past validity mask was parsed but never applied, allowing agents with invalid past timesteps into training. This corrupted the coordinate normalization (which computes translation and rotation from the last observed positions), causing exploding predictions. The fix filters to agents with all past timesteps valid, which was essential for stable training. (See technical report for details.)
+- **Built the data pipeline:** TFRecord parsing, coordinate normalization (translate to origin, rotate to align heading with +x axis), validity mask handling, and train/val splitting.
+- **Established config-based experiment management:** YAML configuration files for reproducible experiments with automatic timestamped logging and checkpoint saving.
+- **Evaluation and visualization:** ADE/FDE metrics with validity-aware computation, animated GIF generation comparing predicted vs. ground truth trajectories, and dynamic checkpoint resolution for evaluation.
 
 ## Architecture Details
 

@@ -3,35 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Waymo Motion Forecasting · Gaurav Mitra</title>
-<meta name="description" content="Trajectory prediction on the Waymo Open Motion Dataset, with a Conv-MLP baseline and a multi-modal extension predicting six futures with confidence.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<title>Waymo Motion Forecasting | Gaurav Mitra</title>
+<meta name="description" content="Trajectory prediction on the Waymo Open Motion Dataset, with a Conv-MLP baseline and a multi-modal extension predicting six futures with confidence. 73% ADE reduction with multi-modal prediction.">
 <link rel="stylesheet" href="../assets/css/style.css">
 
 </head>
 <body>
-<header class="nav"><div class="nav-inner">
-  <a class="nav-brand" href="../index.html">Gaurav Mitra</a>
-  <nav class="nav-links">
-    <a href="../index.html#projects">Projects</a>
-    <a class="hide-sm" href="../resume.pdf">Resume</a>
-    <a href="https://github.com/Gogo2015" target="_blank" rel="noopener">GitHub</a>
-    <a class="hide-sm" href="https://linkedin.com/in/mitragaurav" target="_blank" rel="noopener">LinkedIn</a>
-    <a href="mailto:mitragaurav10@gmail.com">Email</a>
-  </nav>
-</div></header>
-<main><div class="container narrow">
-  <div class="proj-header">
-    <a class="back-link" href="../index.html">← All projects</a>
-    <h1>Waymo Motion Forecasting</h1>
-    
-    <div class="proj-actions">
-      <a class="btn btn-primary" href="https://github.com/Gogo2015/WaymoMotionEstimator" target="_blank" rel="noopener">GitHub ↗</a>
-      <a class="btn" href="https://github.com/Gogo2015/WaymoMotionEstimator/blob/main/ConvMLPPaper.pdf" target="_blank" rel="noopener">Paper (PDF) ↗</a>
-    </div>
-  </div>
+<div class="project-page">
+<p class="home-link"><a href="../index.html">Gaurav Mitra</a></p>
+<main>
+  <h1>Waymo Motion Forecasting</h1>
+  
+  <p class="links"><a href="https://github.com/Gogo2015/WaymoMotionEstimator">Code</a><a href="https://github.com/Gogo2015/WaymoMotionEstimator/blob/main/ConvMLPPaper.pdf">Paper</a></p>
   <article class="prose">
 <h2>Project Overview</h2>
 <p>This project implements trajectory prediction models on the Waymo Open Motion Dataset (WOMD). Given 1 second of past agent motion (10 timesteps at 10 Hz), the models forecast 8 seconds of future positions (80 timesteps). Both models were trained on 250 TFRecord files (~25% of the WOMD training partition) using a GPU-accelerated Google Compute Engine VM, streaming data directly from Google Cloud Storage.</p>
@@ -99,18 +82,8 @@
 <li>Increase trajectory modes with improved loss balancing</li>
 <li>Investigate batch size sensitivity for WTA training at scale</li>
 </ul>
-<hr />
-<p><strong>Link:</strong> <a href="https://github.com/Gogo2015/WaymoMotionEstimator">GitHub Repository</a></p>
   </article>
-</div></main>
-<footer class="footer"><div class="container"><div class="footer-inner">
-  <span class="muted">© 2026 Gaurav Mitra</span>
-  <div class="footer-links">
-    <a href="mailto:mitragaurav10@gmail.com">Email</a>
-    <a href="https://github.com/Gogo2015" target="_blank" rel="noopener">GitHub</a>
-    <a href="https://linkedin.com/in/mitragaurav" target="_blank" rel="noopener">LinkedIn</a>
-    <a href="../resume.pdf">Resume</a>
-  </div>
-</div></div></footer>
+</main>
+</div>
 </body>
 </html>

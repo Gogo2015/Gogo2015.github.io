@@ -3,129 +3,94 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Gaurav Mitra · ML & Computer Vision</title>
-<meta name="description" content="I work on machine learning for computer vision, motion forecasting, and vision-language-action models for robotics.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<title>Gaurav Mitra</title>
+<meta name="description" content="Gaurav Mitra is a computer science master's student at Georgia Tech doing robot learning research in the PAIR Lab.">
 <link rel="stylesheet" href="assets/css/style.css">
 
 </head>
 <body>
-<header class="nav"><div class="nav-inner">
-  <a class="nav-brand" href="index.html">Gaurav Mitra</a>
-  <nav class="nav-links">
-    <a href="index.html#projects">Projects</a>
-    <a class="hide-sm" href="resume.pdf">Resume</a>
-    <a href="https://github.com/Gogo2015" target="_blank" rel="noopener">GitHub</a>
-    <a class="hide-sm" href="https://linkedin.com/in/mitragaurav" target="_blank" rel="noopener">LinkedIn</a>
-    <a href="mailto:mitragaurav10@gmail.com">Email</a>
-  </nav>
-</div></header>
-<main>
-<section class="hero"><div class="container">
-  <p class="eyebrow">Machine Learning · Computer Vision · Robotics</p>
+<div class="home">
+<aside class="side">
+  <img class="photo" src="assets/photo.jpg" alt="Gaurav Mitra">
   <h1>Gaurav Mitra</h1>
-  <p class="role">MSCS @ Georgia Tech <span class="sep">·</span> AI / ML <span class="sep">·</span> graduating May 2027</p>
-  <p class="intro">I work on machine learning for computer vision, motion forecasting, and vision-language-action models for robotics.</p>
-  <div class="hero-actions">
-    <a class="btn btn-primary" href="resume.pdf">Resume</a>
-    <a class="btn" href="https://github.com/Gogo2015" target="_blank" rel="noopener">GitHub ↗</a>
-    <a class="btn" href="mailto:mitragaurav10@gmail.com">Email</a>
-  </div>
-</div></section>
-
-<section><div class="container narrow">
-  <div class="facts">
-    <div class="fact"><h3>Currently</h3><ul><li><strong>Incoming SWE Intern @ IBM</strong> (Summer 2026)</li><li>Pursuing an ML research position in robotics (VLAMs / home robotics)</li></ul></div>
-    <div class="fact"><h3>Previously</h3><ul><li>Neural video compression autoencoders (variable-rate) at the Oden Institute, UT Austin</li><li>Cloud infrastructure, containerization, and CI/CD at Applied Research Laboratories</li></ul></div>
-  </div>
-</div></section>
-
-<section id="projects"><div class="container">
-  <div class="section-head"><h2>Projects</h2></div>
-  <div class="projects-grid">
-<a class="card featured" href="projects/vlatune.html">
-  <div class="card-top">
-    <h3 class="card-title">VLATune</h3>
-    <span class="badge">New</span>
-  </div>
-  <p class="card-desc">Reward-weighted filtered behavior cloning for flow-matching VLAs on LIBERO. A study of whether lightweight RL can improve SmolVLA, with a negative result.</p>
-  <p class="card-highlight">🤖 SmolVLA · LIBERO · a negative result</p>
-  <div class="card-tags"><span class="tag">Robotics</span><span class="tag">VLA</span><span class="tag">Reinforcement Learning</span><span class="tag">Flow Matching</span></div>
-  <span class="card-cta">View project <span class="arrow">→</span></span>
-</a>
-<a class="card" href="projects/liver-transplant.html">
-  <div class="card-top">
-    <h3 class="card-title">Liver Transplant Outcome Prediction</h3>
-    <span class="badge">Award</span>
-  </div>
-  <p class="card-desc">A full ML pipeline on the OPTN/SRTR national registry predicting graft failure with classification and survival analysis across ~87k transplants.</p>
-  <p class="card-highlight">🏆 Best Project Award in CS 7641</p>
-  <div class="card-tags"><span class="tag">Machine Learning</span><span class="tag">Survival Analysis</span><span class="tag">Healthcare</span></div>
-  <span class="card-cta">View project <span class="arrow">→</span></span>
-</a>
-<a class="card" href="projects/waymo.html">
-  <div class="card-top">
-    <h3 class="card-title">Waymo Motion Forecasting</h3>
-    
-  </div>
-  <p class="card-desc">Trajectory prediction on the Waymo Open Motion Dataset, with a Conv-MLP baseline and a multi-modal extension predicting six futures with confidence.</p>
-  <p class="card-highlight">📉 73% ADE reduction with multi-modal prediction</p>
-  <div class="card-tags"><span class="tag">Computer Vision</span><span class="tag">Motion Forecasting</span><span class="tag">TensorFlow</span></div>
-  <span class="card-cta">View project <span class="arrow">→</span></span>
-</a>
-<a class="card" href="projects/gnn-homo-lumo.html">
-  <div class="card-top">
-    <h3 class="card-title">GNN Molecular Property Prediction</h3>
-    
-  </div>
-  <p class="card-desc">Predicting the HOMO-LUMO gap from 2D molecular graphs with a deep edge-aware GINE network, and testing whether a Virtual Node helps.</p>
-  <p class="card-highlight">⚛️ 0.142 eV MAE on 3.38M molecules (PCQM4Mv2)</p>
-  <div class="card-tags"><span class="tag">Graph Neural Nets</span><span class="tag">PyTorch Geometric</span><span class="tag">Chemistry</span></div>
-  <span class="card-cta">View project <span class="arrow">→</span></span>
-</a>
-<a class="card" href="projects/llm-eval.html">
-  <div class="card-top">
-    <h3 class="card-title">LLM Semantic Syntax Evaluation</h3>
-    
-  </div>
-  <p class="card-desc">An automated pipeline testing whether LLMs can generate semantically correct pygame board games, checking syntax, semantics, and game logic.</p>
-  <p class="card-highlight">🎮 3 models · 5 games · headless logic tests</p>
-  <div class="card-tags"><span class="tag">LLMs</span><span class="tag">Evaluation</span><span class="tag">Programming Languages</span></div>
-  <span class="card-cta">View project <span class="arrow">→</span></span>
-</a>
-<a class="card" href="projects/earthquake.html">
-  <div class="card-top">
-    <h3 class="card-title">Earthquake Analysis Web App</h3>
-    
-  </div>
-  <p class="card-desc">A containerized Flask REST API over USGS earthquake data with Redis storage, async job processing, and server-side charting, deployed to Kubernetes.</p>
-  <p class="card-highlight">☁️ Dockerized · async workers · K8s deploy</p>
-  <div class="card-tags"><span class="tag">Backend</span><span class="tag">Flask</span><span class="tag">Redis</span><span class="tag">Kubernetes</span></div>
-  <span class="card-cta">View project <span class="arrow">→</span></span>
-</a>
-<a class="card" href="projects/autoencoder.html">
-  <div class="card-top">
-    <h3 class="card-title">Video Compression Autoencoder</h3>
-    
-  </div>
-  <p class="card-desc">A quantized 3D-convolutional autoencoder for video compression, with tunable codebook sizes controlling the rate-distortion tradeoff on Moving MNIST.</p>
-  <p class="card-highlight">🎞️ Tunable rate-distortion via codebook size</p>
-  <div class="card-tags"><span class="tag">Computer Vision</span><span class="tag">Compression</span><span class="tag">PyTorch</span></div>
-  <span class="card-cta">View project <span class="arrow">→</span></span>
-</a>
-  </div>
-</div></section>
+  <p class="role">Computer science master's student<br>Georgia Tech</p>
+  <ul class="contact">
+    <li><a href="resume.pdf">Resume</a></li>
+    <li><a href="mailto:mitragaurav10@gmail.com">mitragaurav10@gmail.com</a></li>
+    <li><a href="https://github.com/Gogo2015">GitHub</a></li>
+    <li><a href="https://linkedin.com/in/mitragaurav">LinkedIn</a></li>
+  </ul>
+</aside>
+<main>
+<p>I am a master's student in computer science at Georgia Tech, graduating in December 2027. I do robot learning research in <a href="https://animesh.garg.tech">Animesh Garg's PAIR Lab</a>.</p>
+<p>I am interested in improving foundation models on specific tasks by fine-tuning on limited data.</p>
+<h2>Experience</h2>
+<div class="entry">
+  <p class="when">Aug 2026 to present</p>
+  <div><p class="what">Research Assistant, PAIR Lab, Georgia Tech</p><p class="detail">Sim-to-real robot learning on real hardware.</p></div>
+</div>
+<div class="entry">
+  <p class="when">Aug 2026 to present</p>
+  <div><p class="what">Graduate Teaching Assistant, Georgia Tech</p><p class="detail">CS 6601, Artificial Intelligence.</p></div>
+</div>
+<div class="entry">
+  <p class="when">May to Aug 2026</p>
+  <div><p class="what">Software Engineer Intern, IBM</p><p class="detail">Shipped 21 production metrics for HashiCorp Vault. Built a proof of concept for detecting anomalous key usage.</p></div>
+</div>
+<div class="entry">
+  <p class="when">Jun 2024 to Jan 2025</p>
+  <div><p class="what">Research Assistant, Oden Institute, UT Austin</p><p class="detail">Quantized convolutional autoencoders for video compression.</p></div>
+</div>
+<div class="entry">
+  <p class="when">May to Nov 2023</p>
+  <div><p class="what">Software Engineering Intern, Applied Research Laboratories</p><p class="detail">Backend monitoring services, Docker, and CI/CD to AWS.</p></div>
+</div>
+<h2>Projects</h2>
+<div class="project">
+  <h3><a href="projects/vlatune.html">VLATune</a></h3>
+  <p class="detail">Reward-weighted filtered behavior cloning for flow-matching VLAs on LIBERO. A study of whether lightweight RL can improve SmolVLA, with a negative result.</p>
+  <p class="links"><a href="https://github.com/Gogo2015/VLATune">Code</a><a href="https://github.com/Gogo2015/VLATune/blob/main/paper/main.pdf">Paper</a></p>
+</div>
+<div class="project">
+  <h3><a href="projects/liver-transplant.html">Liver Transplant Outcome Prediction</a></h3>
+  <p class="detail">A full ML pipeline on the OPTN/SRTR national registry predicting graft failure with classification and survival analysis across ~87k transplants. Best Project Award in CS 7641.</p>
+  <p class="links"><a href="https://github.com/Gogo2015/liver-transplant-ml">Code</a></p>
+</div>
+<div class="project">
+  <h3><a href="projects/waymo.html">Waymo Motion Forecasting</a></h3>
+  <p class="detail">Trajectory prediction on the Waymo Open Motion Dataset, with a Conv-MLP baseline and a multi-modal extension predicting six futures with confidence. 73% ADE reduction with multi-modal prediction.</p>
+  <p class="links"><a href="https://github.com/Gogo2015/WaymoMotionEstimator">Code</a><a href="https://github.com/Gogo2015/WaymoMotionEstimator/blob/main/ConvMLPPaper.pdf">Paper</a></p>
+</div>
+<div class="project">
+  <h3><a href="projects/gnn-homo-lumo.html">GNN Molecular Property Prediction</a></h3>
+  <p class="detail">Predicting the HOMO-LUMO gap from 2D molecular graphs with a deep edge-aware GINE network, and testing whether a Virtual Node helps. 0.142 eV MAE on 3.38M molecules (PCQM4Mv2).</p>
+  <p class="links"><a href="https://github.com/Gogo2015/GNN-HOMO-LUMO">Code</a></p>
+</div>
+<div class="project">
+  <h3><a href="projects/llm-eval.html">LLM Semantic Syntax Evaluation</a></h3>
+  <p class="detail">An automated pipeline testing whether LLMs can generate semantically correct pygame board games, checking syntax, semantics, and game logic.</p>
+  <p class="links"><a href="https://github.com/Gogo2015/llm-semantic-syntax">Code</a></p>
+</div>
+<div class="project">
+  <h3><a href="projects/earthquake.html">Earthquake Analysis Web App</a></h3>
+  <p class="detail">A containerized Flask REST API over USGS earthquake data with Redis storage, async job processing, and server-side charting, deployed to Kubernetes.</p>
+  <p class="links"><a href="https://github.com/Gogo2015/EarthquakeAnalyzer">Code</a></p>
+</div>
+<div class="project">
+  <h3><a href="projects/autoencoder.html">Video Compression Autoencoder</a></h3>
+  <p class="detail">A quantized 3D-convolutional autoencoder for video compression, with tunable codebook sizes controlling the rate-distortion tradeoff on Moving MNIST.</p>
+  <p class="links"><a href="https://github.com/Gogo2015/ae_compressed_vision">Code</a><a href="https://github.com/Gogo2015/ae_compressed_vision/blob/main/AutoencoderPaper.pdf">Paper</a></p>
+</div>
+<h2>Education</h2>
+<div class="entry">
+  <p class="when">2025 to 2027</p>
+  <div><p class="what">MS in Computer Science, Georgia Tech</p><p class="detail">AI specialization.</p></div>
+</div>
+<div class="entry">
+  <p class="when">2022 to 2025</p>
+  <div><p class="what">BS in Aerospace Engineering, UT Austin</p><p class="detail">Engineering Honors Program.</p></div>
+</div>
 </main>
-<footer class="footer"><div class="container"><div class="footer-inner">
-  <span class="muted">© 2026 Gaurav Mitra</span>
-  <div class="footer-links">
-    <a href="mailto:mitragaurav10@gmail.com">Email</a>
-    <a href="https://github.com/Gogo2015" target="_blank" rel="noopener">GitHub</a>
-    <a href="https://linkedin.com/in/mitragaurav" target="_blank" rel="noopener">LinkedIn</a>
-    <a href="resume.pdf">Resume</a>
-  </div>
-</div></div></footer>
+</div>
 </body>
 </html>

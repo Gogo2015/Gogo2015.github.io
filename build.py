@@ -34,8 +34,7 @@ BIO = [
     "I am a master's student in computer science at Georgia Tech, graduating in "
     f'December 2027. I do robot learning research in <a href="{PAIR}">Animesh '
     "Garg's PAIR Lab</a>.",
-    "I am interested in improving foundation models on specific tasks by "
-    "fine-tuning on limited data.",
+    "I am interested in post-training foundation models with reinforcement learning.",
 ]
 
 EXPERIENCE = [
